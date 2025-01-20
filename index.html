@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Моя Игра на PyScript</title>
+
+  <!-- Подключаем PyScript -->
+  <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+  <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+  <!-- Подключаем свой CSS (опционально) -->
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* Для примера: немного стилей прямо тут */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      background: #3f51b5;
+      color: white;
+      width: 100%;
+      padding: 1rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .container {
+      background: white;
+      width: 600px;
+      max-width: 90%;
+      margin: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    button {
+      background: #3f51b5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #32408f;
+    }
+    .menu, .screen {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Главное меню моей игры</h1>
+</header>
+
+<!-- Главное меню -->
+<div class="container menu" id="menu-screen">
+  <h2>Главное меню</h2>
+  <button py-click="open_screen('game')">Начало игры</button><br/>
+  <button py-click="open_screen('achievements')">Достижения</button><br/>
+  <button py-click="open_screen('rules')">Правила</button><br/>
+  <button py-click="open_screen('settings')">Настройки</button>
+</div>
+
+<!-- Экран "Начало игры" -->
+<div class="container screen" id="game-screen">
+  <h2>Начало игры</h2>
+  <p>Пока пусто...</p>
+  <button py-click="back_to_menu()">Назад в меню</button>
+</div>
+
+<!-- Экран "Достижения" -->
+<div class="container screen" id="achievements-screen">
+  <h2>Достижения</h2>
+  <p>Список достижений пока пуст.</p>
+  <button py-click="back_to_menu()">Назад в меню</button>
+</div>
+
+<!-- Экран "Правила" -->
+<div class="container screen" id="rules-screen">
+  <h2>Правила</h2>
+  <p>Пока нет подробных правил...</p>
+  <button py-click="back_to_menu()">Назад в меню</button>
+</div>
+
+<!-- Экран "Настройки" -->
+<div class="container screen" id="settings-screen">
+  <h2>Настройки</h2>
+  <p>Настройки будут тут...</p>
+  <button py-click="back_to_menu()">Назад в меню</button>
+</div>
+
+<!-- PyScript-код -->
+<py-script>
+from js import document
+
+def switch_view(show_id):
+    """
+    Показывает один экран, прячет все остальные.
+    """
+    # Списки айдишников для меню и экранов
+    all_menus = ['menu-screen']
+    all_screens = ['game-screen', 'achievements-screen', 'rules-screen', 'settings-screen']
+
+    # Скрываем всё
+    for mid in all_menus + all_screens:
+        elem = document.getElementById(mid)
+        if elem:
+            elem.style.display = "none"
+
+    # Если это 'menu', показываем меню
+    if show_id == 'menu':
+        menu_elem = document.getElementById("menu-screen")
+        if menu_elem:
+            menu_elem.style.display = "block"
+    else:
+        # Иначе показываем нужный экран
+        screen_elem = document.getElementById(show_id + "-screen")
+        if screen_elem:
+            screen_elem.style.display = "block"
+
+def back_to_menu():
+    switch_view('menu')
+
+def open_screen(name):
+    switch_view(name)
+
+# При загрузке показываем меню
+switch_view('menu')
+</py-script>
+
+</body>
+</html>
